@@ -14,23 +14,13 @@ namespace SmartShop.Models
     
     public partial class Product
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
-        {
-            this.UserBuyingProducts = new HashSet<UserBuyingProduct>();
-        }
-    
-        public int ProductID { get; set; }
-        public string SellerID { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
+        public string ProductCategory { get; set; }
         public string ProductDescription { get; set; }
-        public string UoM { get; set; }
-        public int Quanlity { get; set; }
-        public Nullable<int> Price { get; set; }
-        public bool Enable { get; set; }
+        public Nullable<decimal> ProductPrice { get; set; }
+        public string UserID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserBuyingProduct> UserBuyingProducts { get; set; }
     }
 }
