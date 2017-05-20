@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Meeru\Documents\Visual Studio 2017\SmartShop\SmartShop\Models\Product.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Jithin\Documents\Visual Studio 2015\Projects\Smartshop\Smartshop\Models\Product.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

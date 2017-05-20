@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SmartShop.Models
+namespace Smartshop.Models
 {
     using System;
     using System.Collections.Generic;

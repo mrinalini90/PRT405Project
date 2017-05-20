@@ -77,7 +77,7 @@
           <Property Name="ProductPrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <Association Name="FK__Product__UserID__32E0915F">
+        <Association Name="FK__Product__UserID__35BCFE0A">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -153,7 +153,7 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Product__UserID__32E0915F" Association="Self.FK__Product__UserID__32E0915F">
+          <AssociationSet Name="FK__Product__UserID__35BCFE0A" Association="Self.FK__Product__UserID__35BCFE0A">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
@@ -236,7 +236,7 @@
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="AspNetUsers" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__35BCFE0A" FromRole="AspNetUsers" ToRole="Product" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Product">
@@ -249,7 +249,7 @@
           <Property Name="ProductDescription" Type="String" MaxLength="220" FixedLength="false" Unicode="true" />
           <Property Name="ProductPrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="Product" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Product__UserID__35BCFE0A" FromRole="Product" ToRole="AspNetUsers" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -279,7 +279,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__UserID__32E0915F">
+        <Association Name="FK__Product__UserID__35BCFE0A">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -310,7 +310,7 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__UserID__32E0915F" Association="Self.FK__Product__UserID__32E0915F">
+          <AssociationSet Name="FK__Product__UserID__35BCFE0A" Association="Self.FK__Product__UserID__35BCFE0A">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>

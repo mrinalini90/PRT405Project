@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using SmartShop.Models;
+using Smartshop.Models;
 
-namespace SmartShop
+namespace Smartshop
 {
     public class EmailService : IIdentityMessageService
     {

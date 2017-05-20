@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace SmartShop
+namespace Smartshop
 {
     public class MvcApplication : System.Web.HttpApplication
     {
