@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using SmartShop.Models;
+using Smartshop.Models;
 
-namespace SmartShop.Controllers
+namespace Smartshop.Controllers
 {
     [Authorize]
     public class ManageController : Controller

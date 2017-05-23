@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using SmartShop.Models;
+using Smartshop.Models;
 
-namespace SmartShop
+namespace Smartshop
 {
     public class EmailService : IIdentityMessageService
     {
@@ -53,11 +53,11 @@ namespace SmartShop
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 3,
-                RequireNonLetterOrDigit = false,
+                RequiredLength = 6,
+                RequireNonLetterOrDigit = true,
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireUppercase = false,
+                RequireUppercase = true,
             };
 
             // Configure user lockout defaults
