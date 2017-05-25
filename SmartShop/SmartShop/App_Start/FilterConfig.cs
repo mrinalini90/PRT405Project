@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace Smartshop
+namespace SmartShop
 {
     public class FilterConfig
     {

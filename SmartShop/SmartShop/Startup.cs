@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Smartshop.Startup))]
-namespace Smartshop
+[assembly: OwinStartupAttribute(typeof(SmartShop.Startup))]
+namespace SmartShop
 {
     public partial class Startup
     {
