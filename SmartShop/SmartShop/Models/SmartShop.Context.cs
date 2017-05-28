@@ -31,5 +31,7 @@ namespace SmartShop.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<UserBuyingProduct> UserBuyingProducts { get; set; }
     }
 }

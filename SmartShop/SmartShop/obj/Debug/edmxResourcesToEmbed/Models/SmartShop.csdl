@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="SmartShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="SmartShopModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
   <EntityType Name="C__MigrationHistory">
     <Key>
       <PropertyRef Name="MigrationId" />
@@ -55,22 +55,50 @@
     <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
     <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
     <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="265" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
     <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-    <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="AspNetUsers" ToRole="Product" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Products_AspNetUsers" FromRole="AspNetUsers" ToRole="Products" />
+    <NavigationProperty Name="UserBuyingProducts" Relationship="Self.FK_UserBuyingProduct_AspNetUsers" FromRole="AspNetUsers" ToRole="UserBuyingProduct" />
     <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
   </EntityType>
   <EntityType Name="Product">
     <Key>
-      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductID" />
     </Key>
-    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="ProductCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ProductDescription" Type="String" MaxLength="220" FixedLength="false" Unicode="true" />
-    <Property Name="ProductPrice" Type="Decimal" Precision="10" Scale="2" />
-    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="Product" ToRole="AspNetUsers" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SellerID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="UoM" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Quanlity" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="Enable" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Products_AspNetUsers" FromRole="Products" ToRole="AspNetUsers" />
+    <NavigationProperty Name="UserBuyingProducts" Relationship="Self.FK_UserBuyingProduct_Products" FromRole="Products" ToRole="UserBuyingProduct" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="UserBuyingProduct">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Paid" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserBuyingProduct_AspNetUsers" FromRole="UserBuyingProduct" ToRole="AspNetUsers" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_UserBuyingProduct_Products" FromRole="UserBuyingProduct" ToRole="Products" />
   </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -100,15 +128,39 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Product__UserID__32E0915F">
-    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
-    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+  <Association Name="FK_Products_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="AspNetUsers">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Product">
+      <Dependent Role="Products">
+        <PropertyRef Name="SellerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserBuyingProduct_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="UserBuyingProduct" Type="Self.UserBuyingProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserBuyingProduct">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserBuyingProduct_Products">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="UserBuyingProduct" Type="Self.UserBuyingProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="UserBuyingProduct">
+        <PropertyRef Name="ProductID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -123,6 +175,8 @@
     <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
     <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="UserBuyingProducts" EntityType="Self.UserBuyingProduct" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -131,9 +185,17 @@
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
     </AssociationSet>
-    <AssociationSet Name="FK__Product__UserID__32E0915F" Association="Self.FK__Product__UserID__32E0915F">
+    <AssociationSet Name="FK_Products_AspNetUsers" Association="Self.FK_Products_AspNetUsers">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="Product" EntitySet="Products" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserBuyingProduct_AspNetUsers" Association="Self.FK_UserBuyingProduct_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserBuyingProduct" EntitySet="UserBuyingProducts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserBuyingProduct_Products" Association="Self.FK_UserBuyingProduct_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="UserBuyingProduct" EntitySet="UserBuyingProducts" />
     </AssociationSet>
     <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
