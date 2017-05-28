@@ -14,13 +14,23 @@ namespace SmartShop.Models
     
     public partial class Product
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.Carts = new HashSet<Cart>();
+        }
+    
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string ProductCategory { get; set; }
         public string ProductDescription { get; set; }
         public Nullable<decimal> ProductPrice { get; set; }
         public string UserID { get; set; }
+        public string ProductStatus { get; set; }
+        public Nullable<int> ProductQuantity { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Carts { get; set; }
     }
 }

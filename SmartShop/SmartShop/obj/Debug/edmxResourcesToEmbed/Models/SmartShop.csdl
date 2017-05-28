@@ -59,6 +59,7 @@
     <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
     <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="AspNetUsers" ToRole="Product" />
     <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+    <NavigationProperty Name="Carts" Relationship="SmartShopModel.FK__Cart__UserID__35BCFE0A" FromRole="AspNetUser" ToRole="Cart" />
   </EntityType>
   <EntityType Name="Product">
     <Key>
@@ -71,6 +72,9 @@
     <Property Name="ProductPrice" Type="Decimal" Precision="10" Scale="2" />
     <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Product__UserID__32E0915F" FromRole="Product" ToRole="AspNetUsers" />
+    <Property Name="ProductStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductQuantity" Type="Int32" />
+    <NavigationProperty Name="Carts" Relationship="SmartShopModel.FK__Cart__ProductId__36B12243" FromRole="Product" ToRole="Cart" />
   </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -139,5 +143,50 @@
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
     </AssociationSet>
+    <EntitySet Name="Carts" EntityType="SmartShopModel.Cart" />
+    <AssociationSet Name="FK__Cart__UserID__35BCFE0A" Association="SmartShopModel.FK__Cart__UserID__35BCFE0A">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="Cart" EntitySet="Carts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cart__ProductId__36B12243" Association="SmartShopModel.FK__Cart__ProductId__36B12243">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Cart" EntitySet="Carts" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Cart">
+    <Key>
+      <PropertyRef Name="CartId" />
+    </Key>
+    <Property Name="CartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="TotalAmount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Int32" />
+    <NavigationProperty Name="AspNetUser" Relationship="SmartShopModel.FK__Cart__UserID__35BCFE0A" FromRole="Cart" ToRole="AspNetUser" />
+    <NavigationProperty Name="Product" Relationship="SmartShopModel.FK__Cart__ProductId__36B12243" FromRole="Cart" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK__Cart__UserID__35BCFE0A">
+    <End Type="SmartShopModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+    <End Type="SmartShopModel.Cart" Role="Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cart__ProductId__36B12243">
+    <End Type="SmartShopModel.Product" Role="Product" Multiplicity="0..1" />
+    <End Type="SmartShopModel.Cart" Role="Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

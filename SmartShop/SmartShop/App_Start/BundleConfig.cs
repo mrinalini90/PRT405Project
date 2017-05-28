@@ -23,9 +23,26 @@ namespace SmartShop
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                "~/Scripts/angular.js",
+                "~/Scripts/angular-route.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
+                "~/Scripts/materialize/materialize.js",
+                "~/Scripts/Custom.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularJs").Include(
+                "~/Scripts/ApiScript/Module.js",
+                "~/Scripts/ApiScript/Route.js",
+                "~/Scripts/ApiScript/Service.js",
+                "~/Scripts/ApiScript/Controller.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                //"~/Content/materialize/css/materialize.css",
+                      "~/Content/site.css"
+               // "~/Content/bootstrap/'*'.less"
+               ));
         }
     }
 }

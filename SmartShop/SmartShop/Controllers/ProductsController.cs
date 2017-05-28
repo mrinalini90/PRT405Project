@@ -2,133 +2,155 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Web;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Mvc;
+using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using SmartShop.Models;
 
 namespace SmartShop.Controllers
 {
-    public class ProductsController : Controller
+   
+    public class ProductsController : BaseApiController
     {
-        private SmartShopEntities db = new SmartShopEntities();
 
-        // GET: Products
-        public ActionResult Index()
+        // GET: api/Products
+        [System.Web.Http.Route("api/Products")]
+        public HttpResponseMessage GetProducts()
         {
-            var currentUser = User.Identity.GetUserId();
-            var products = db.Products.Include(p => p.AspNetUser).Where(p => p.AspNetUser.Id == currentUser);
-            return View(products.ToList());
+            IEnumerable<Product> prod ;
+            var admin = User.Identity.GetUserName();
+            if (admin == "admin@admin.com")
+            {
+                var currentUser = User.Identity.GetUserId();
+
+                if (User.Identity.IsAuthenticated == true)
+                {
+                    currentUser = User.Identity.GetUserId();
+                }
+
+                prod = Db.Products;
+            }
+            else
+            {
+                var currentUser = User.Identity.GetUserId();
+
+                if (User.Identity.IsAuthenticated == true)
+                {
+                    currentUser = User.Identity.GetUserId();
+                }
+
+                prod = Db.Products.Where(x => x.UserID == currentUser);
+            }
+            return ToJson(prod.AsEnumerable());
         }
 
-        // GET: Products/Details/5
-        public ActionResult Details(int? id)
+        // GET: api/Products/5
+        [ResponseType(typeof(Product))]
+        [System.Web.Http.Route("api/Products/{id:int}")]
+        public HttpResponseMessage GetProduct(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
+
+            Product product = Db.Products.Find(id);
+
             if (product == null)
             {
-                return HttpNotFound();
+               Debug.WriteLine("Product Not Found");
             }
-            return View(product);
+            return ToJson(product);
         }
 
-        // GET: Products/Create
-        public ActionResult Create()
+        // PUT: api/Products/5
+        [ResponseType(typeof(void))]
+        
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/UpdateProduct")]
+        public HttpResponseMessage PutProduct([FromBody] Product product)
         {
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,ProductName,ProductCategory,ProductDescription,ProductPrice,UserID")] Product product)
-        {
-            if (ModelState.IsValid)
+            product.UserID = User.Identity.GetUserId();
+            if (!ModelState.IsValid)
             {
-                db.Products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", product.UserID);
-            return View(product);
+            if (product.ProductId != product.ProductId)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Product Id is invalid");
+            }
+            
+
+            Db.Entry(product).State = EntityState.Modified;
+
+            try
+            {
+                Db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(product.ProductId))
+                {
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
+        // POST: api/Products
+        [ResponseType(typeof(Product))]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/AddProduct")]
+        public HttpResponseMessage PostProduct([FromBody] Product product)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
+            product.UserID = User.Identity.GetUserId();
+            Db.Products.Add(product);
+            Db.SaveChanges();
+            CreatedAtRoute("DefaultApi", new {id = product.ProductId}, product);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        // DELETE: api/Products/5
+        [ResponseType(typeof(Product))]
+        [System.Web.Http.HttpDelete]
+        [System.Web.Http.Route("api/DeleteProduct/{id:int}")]
+        public IHttpActionResult DeleteProduct(int id)
+        {
+            Product product = Db.Products.Find(id);
             if (product == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", product.UserID);
-            return View(product);
-        }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,ProductCategory,ProductDescription,ProductPrice,UserID")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", product.UserID);
-            return View(product);
-        }
+            Db.Products.Remove(product);
+            Db.SaveChanges();
 
-        // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok(product);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                Db.Dispose();
             }
             base.Dispose(disposing);
         }
+
+        private bool ProductExists(int id)
+        {
+            return Db.Products.Count(e => e.ProductId == id) > 0;
+        }
+
+       
     }
 }
