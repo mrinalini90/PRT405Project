@@ -1,0 +1,72 @@
+﻿@model IEnumerable<E_Corp.Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products</h2>
+
+@if (User.IsInRole("Seller"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.SellerID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quanlity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Enable)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.SellerID)
+        </td>*@
+        <td>
+            @Html.ActionLink(item.ProductName, "Details", new { id = item.ProductID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quanlity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Enable)
+        </td>
+
+        @if (User.IsInRole("Seller"))
+        {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+            </td>
+        }
+
+    </tr>
+}
+
+</table>

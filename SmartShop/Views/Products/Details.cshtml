@@ -1,0 +1,80 @@
+﻿@model E_Corp.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @*@*<dt>
+            @Html.DisplayNameFor(model => model.SellerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SellerID)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quanlity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quanlity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Enable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Enable)
+        </dd>
+
+    </dl>
+</div>
+@if (User.IsInRole("Seller"))
+{
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) 
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+}
+else if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+}
+
+
