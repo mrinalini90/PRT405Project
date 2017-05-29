@@ -15,3 +15,5 @@ Installation
 		  <add name="SmartShopEntities" connectionString="metadata=res://*/Models.SmartShop.csdl|res://*/Models.SmartShop.ssdl|res://*/Models.SmartShop.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.\sqlexpress;initial catalog=SmartShop;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" /></connectionStrings>
 	c. run the db-setup.sql code on your SmartShop database.
 	
+	Admin Email Id would be admin@admin.com, if you resgiter using this email adming access can be gained
+	
