@@ -1,0 +1,379 @@
+﻿
+
+
+
+@Scripts.Render("~/bundles/angularJs")
+<style>
+    table, tr, td, th {
+        border: 1px solid #ccc;
+        margin: 10px;
+        padding: 10px;
+    }
+</style>
+<div ng-controller="LoadController">
+
+</div>
+<base href="/">
+<div data-ng-app="SmartShopModule">
+<div id="product" ng-controller="SmartShopController">
+
+<div class="container">
+<div class="row">
+    <div class="col-sm-9">
+        <h2> Welcome to Smart Shop</h2>
+    </div>
+    <div class="col-sm-3">
+        <br>
+        <button type="button" class="btn btn-default btn-lg" data-toggle="modal" ng-click="CartModal()">ShoppingCart <span class="badge">5</span></button>
+    </div>
+</div>
+
+<!--Shopping cart Modal -->
+
+<div class="modal fade" id="CartModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Productname</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="prod in cartItem">
+                        <td>{{prod.ProductName}}</td>
+                        <td>{{prod.Quantity}}</td>
+                        <td>{{prod.TotalAmount}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm" ng-click=""> Remove </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <br>
+                <div class="row">
+                    <div class="col-sm-9"></div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="AddOrder()"> CheckOut </button>
+                    </div>
+
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Tab Data-->
+<ul class="nav nav-pills">
+    <li class="active">
+        <a data-toggle="pill" href="#home">Buying</a>
+    </li>
+    <li>
+        <a data-toggle="pill" data-target="#myProduct">Selling</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+<div id="home" class="tab-pane fade in active">
+
+    <!-- Buying Tab -->
+    <br>
+    <h4>Lets get shopping</h4>
+    <br>
+    <div class="panel panel-default" data-ng-repeat="prod in buyingProduct">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-10" ng-click="getBuyingProductId(prod.ProductId)">
+                    <h5>
+                        <b>{{prod.ProductName}}</b>
+                    </h5>
+                    <h6>AUD {{prod.ProductPrice}} </h6>
+                    <p>{{prod.ProductDescription}}</p>
+                </div>
+                <div class="col-sm-2">
+                    <a href="#" class="btn btn-primary" ng-click="AddToCart(prod.ProductId)">
+                        <span class="glyphicon glyphicon-plus"></span> Add to cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- View Modal -->
+    <div class="modal fade" id="ViewModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">View Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s10 hidden">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateId" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateId" class="validate">
+                                    <label for="ProductId">Id</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateName" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateName" class="validate">
+                                    <label for="ProductName">Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateCategory" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateCategory" class="validate">
+                                    <label for="ProductDescription">Category</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateDescription" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateDescription" class="validate">
+                                    <label for="ProductDescription">Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateQuantity" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateQuantity" class="validate">
+                                    <label for="ProductQuantity">Quantity</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateDescription" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateDescription" class="validate">
+                                    <label for="ProductDescription">Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">lock</i>
+                                    <input placeholder="Placeholder" id="UpdatePrice" type="number" ng-disabled="disable" required ng-init="disable=true" ng-model="updatePrice" class="validate">
+                                    <label for="ProductPrice">Price</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myProduct" class="tab-pane fade">
+    <br>
+    <h4>My Products</h4>
+    <br>
+    <div class="row">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#AddModal">
+                <span class="glyphicon glyphicon-plus"></span> Add Product
+            </a>
+        </div>
+    </div>
+    <br>
+    <div class="panel panel-default" data-ng-repeat="prod in product">
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-sm-10" ng-click="getSellingProductId(prod.ProductId)">
+                    <h5>
+                        <b>{{prod.ProductName}}</b>
+                    </h5>
+                    <h6>AUD {{prod.ProductPrice}} </h6>
+                    <p>{{prod.ProductDescription}}</p>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="AddModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s10" hidden="hidden">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input id="ProductId" type="text" class="validate" ng-model="ProductId">
+                                    <label for="ProductId">Product Id</label>
+                                </div>
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input id="ProductName" type="text" class="validate" ng-model="ProductName">
+                                    <label for="ProductName">Product Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input id="ProductCategory" type="text" class="validate" ng-model="ProductCategory">
+                                    <label for="ProductCategory">Product Category</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input id="ProductDescription" type="text" class="validate" ng-model="ProductDescription">
+                                    <label for="ProductDescription">Product Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input id="ProductQuantity" type="number" class="validate" ng-model="ProductQuantity">
+                                    <label for="ProductQuantity">Product Quantity</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">lock</i>
+                                    <input id="ProductPrice" type="number" class="validate" ng-model="ProductPrice">
+                                    <label for="ProductPrice">Price</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addProduct();">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="sellingModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-10"></div>
+                        <div class="col-sm-2">
+                            <a class="btn-floating red" ng-click="enableEdit();">
+                                <i class="material-icons">mode_edit</i>
+                            </a>
+                            <a class="btn-floating yellow darken-1" ng-click="enableDelete();">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s10 hidden">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateId" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateId" class="validate">
+                                    <label for="ProductId">Id</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateName" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateName" class="validate">
+                                    <label for="ProductName">Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateCategory" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateCategory" class="validate">
+                                    <label for="ProductDescription">Category</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateDescription" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateDescription" class="validate">
+                                    <label for="ProductDescription">Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateQuantity" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateQuantity" class="validate">
+                                    <label for="ProductQuantity">Quantity</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">perm_identity</i>
+                                    <input placeholder="Placeholder" id="UpdateDescription" type="text" ng-disabled="disable" required ng-init="disable=true" ng-model="updateDescription" class="validate">
+                                    <label for="ProductDescription">Description</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">lock</i>
+                                    <input placeholder="Placeholder" id="UpdatePrice" type="number" ng-disabled="disable" required ng-init="disable=true" ng-model="updatePrice" class="validate">
+                                    <label for="ProductPrice">Price</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <i class="material-icons prefix">lock</i>
+                                    <input type="checkbox" value="" id="UpdateStatus" ng-disabled="disable" required ng-init="disable=true" ng-model="updateStatus" class="validate">
+                                    <label>Selling</label>
+                                </div>
+                            </div>
+                        </form>
+                        <button type="button" class="btn btn-default right" data-dismiss="modal" ng-show="updateButton" ng-click="updateProduct();">Update</button>
+                        <button type="button" class="btn btn-default right" data-dismiss="modal" ng-show="deleteButton" ng-click="deleteProduct();">Delete</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
